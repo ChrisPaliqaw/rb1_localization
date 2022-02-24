@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="rb1_localization" type="record_poi_server.py" name="record_poi_server" output="screen">
+	</node>
+</launch>

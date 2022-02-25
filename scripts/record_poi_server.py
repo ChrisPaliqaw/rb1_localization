@@ -32,6 +32,8 @@ geometry_msgs/PoseWithCovariance pose
 import rospy
 from rb1_localization.srv import POI, POIRequest, POIResponse
 from geometry_msgs.msg import PoseWithCovarianceStamped, Pose
+import os
+from rospkg import RosPack
 
 def poseTupleTostring(pose_tuple):
     title = pose_tuple[0]
@@ -53,12 +55,18 @@ class RecordPOIServer():
     SERVICE_NAME = "save_poi"
     WAIT_HZ = 1
     END_MESSAGE = "end"
+    PACKAGE_NAME = 'rb1_localization'
     OUT_FILE_NAME = "poi.yaml"
 
     def __writeFile(self):
-        with open(RecordPOIServer.OUT_FILE_NAME, 'w') as f:
+        rosPack = RosPack()
+        current_directory = rosPack.get_path(RecordPOIServer.PACKAGE_NAME)
+        full_path = os.path.join(current_directory, RecordPOIServer.OUT_FILE_NAME)
+        with open(full_path, 'w') as f:
             for pose_tuple in self._pois:
                 f.write(poseTupleTostring(pose_tuple))
+                rospy.loginfo(f"Wrote {full_path}")
+        rospy.loginfo("Closed file")
 
     def __serverRequestCallback(self, request: POIRequest):
         success = True

@@ -10,7 +10,7 @@ initial_position:
     z: -0.006400560459200603
     w: 0.9999795162031111
            
-final_position:
+loading_position:
   position:
     x: 5.292807317716526
     y: -1.8013832800490697
